@@ -1,11 +1,23 @@
+/**
+ * 记账城市小程序应用实例
+ * 
+ * 小程序的全局入口文件，负责：
+ * - 应用初始化
+ * - 用户信息获取
+ * - 全局数据管理
+ */
 App({
+  /**
+   * 小程序启动时执行的生命周期函数
+   * 在这里进行应用的初始化设置
+   */
   onLaunch: function () {
-    // 展示本地存储能力
+    // 展示本地存储能力 - 记录启动日志
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    // 获取用户信息
+    // 获取用户信息 - 用于个性化显示
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
@@ -26,8 +38,15 @@ App({
       }
     })
   },
+  
+  /**
+   * 全局数据对象
+   * 存储整个应用中需要共享的数据
+   */
   globalData: {
+    // 用户信息对象
     userInfo: null,
+    // API服务器基础URL，生产环境应替换为实际服务器地址
     apiBaseUrl: 'http://localhost:8000'
   }
 })
