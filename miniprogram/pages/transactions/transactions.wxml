@@ -1,0 +1,53 @@
+<view class="container">
+  <view class="header">
+    <text class="title">交易记录</text>
+    <button class="btn btn-primary" bindtap="navigateToTransactionForm">添加</button>
+  </view>
+  
+  <!-- Empty state -->
+  <view class="empty-state" wx:if="{{!transactions || transactions.length === 0}}">
+    <image class="empty-image" src="/assets/icons/empty-transactions.png" mode="aspectFit"></image>
+    <text class="empty-text">暂无交易记录</text>
+    <button class="btn btn-primary" bindtap="navigateToTransactionForm">添加第一笔交易</button>
+  </view>
+  
+  <!-- Transaction list -->
+  <scroll-view 
+    class="transaction-list" 
+    scroll-y="true" 
+    enable-back-to-top="true"
+    refresher-enabled="true"
+    refresher-threshold="50"
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onPullDownRefresh"
+    wx:else
+  >
+    <view class="transaction-item card" 
+      wx:for="{{transactions}}" 
+      wx:key="id"
+      bindtap="showTransactionDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="transaction-header">
+        <view class="category-container">
+          <text class="category-name">{{item.category_name}}</text>
+          <text class="transaction-location" wx:if="{{item.location}}">{{item.location}}</text>
+        </view>
+        <text class="transaction-amount {{item.type === 'income' ? 'income' : 'expense'}}">
+          {{item.type === 'income' ? '+' : '-'}}{{item.amount}}
+        </text>
+      </view>
+      
+      <view class="transaction-body">
+        <text class="transaction-description" wx:if="{{item.description}}">{{item.description}}</text>
+        <text class="transaction-date">{{item.date}}</text>
+      </view>
+    </view>
+  </scroll-view>
+  
+  <!-- Loading indicator -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

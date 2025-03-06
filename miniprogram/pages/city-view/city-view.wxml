@@ -1,0 +1,71 @@
+<view class="container">
+  <view class="header">
+    <text class="title">我的城市</text>
+  </view>
+  
+  <!-- City canvas -->
+  <view class="canvas-container">
+    <canvas 
+      canvas-id="cityCanvas" 
+      class="city-canvas" 
+      bindtouchstart="handleTouchStart"
+      bindtouchmove="handleTouchMove"
+      bindtouchend="handleTouchEnd"
+    ></canvas>
+  </view>
+  
+  <!-- Building info panel (shown when a building is selected) -->
+  <view class="building-info-panel card" wx:if="{{selectedBuilding}}">
+    <view class="building-info-header">
+      <text class="building-name">{{selectedBuilding.name}}</text>
+      <text class="building-level">等级 {{selectedBuilding.level}}</text>
+    </view>
+    <view class="building-info-body">
+      <text class="building-description">{{selectedBuilding.description || '无描述'}}</text>
+      <text class="building-transaction">关联交易: {{selectedBuilding.transaction_type}} - {{selectedBuilding.category_name}}</text>
+      <text class="building-location" wx:if="{{selectedBuilding.location}}">位置: {{selectedBuilding.location}}</text>
+    </view>
+    <view class="building-actions">
+      <button class="btn btn-outline" bindtap="closeInfoPanel">关闭</button>
+      <button class="btn btn-primary" bindtap="showMergeOptions" wx:if="{{canMergeBuildings}}">合并建筑</button>
+    </view>
+  </view>
+  
+  <!-- Merge buildings panel -->
+  <view class="merge-panel card" wx:if="{{showMergePanel}}">
+    <view class="merge-header">
+      <text class="title">选择要合并的建筑</text>
+    </view>
+    <view class="merge-buildings-list">
+      <view 
+        class="merge-building-item {{building.selected ? 'selected' : ''}}" 
+        wx:for="{{mergeCandidates}}" 
+        wx:key="id" 
+        wx:for-item="building"
+        bindtap="toggleBuildingSelection"
+        data-id="{{building.id}}"
+      >
+        <text class="building-name">{{building.name}}</text>
+        <text class="building-level">等级 {{building.level}}</text>
+      </view>
+    </view>
+    <view class="merge-actions">
+      <button class="btn btn-outline" bindtap="cancelMerge">取消</button>
+      <button class="btn btn-primary" bindtap="mergeSelectedBuildings" disabled="{{selectedBuildingsCount < 2}}">合并</button>
+    </view>
+  </view>
+  
+  <!-- Empty state -->
+  <view class="empty-state" wx:if="{{buildings.length === 0}}">
+    <image class="empty-image" src="/assets/icons/empty-city.png" mode="aspectFit"></image>
+    <text class="empty-text">您的城市还是空的</text>
+    <text class="empty-subtext">添加交易记录来建造您的第一个建筑</text>
+    <button class="btn btn-primary" bindtap="navigateToTransactions">添加交易</button>
+  </view>
+  
+  <!-- Loading indicator -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

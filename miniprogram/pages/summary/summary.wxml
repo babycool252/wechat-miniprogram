@@ -1,0 +1,122 @@
+<view class="container">
+  <view class="header">
+    <text class="title">统计分析</text>
+    <view class="period-selector">
+      <view 
+        class="period-option {{selectedPeriod === 'day' ? 'active' : ''}}" 
+        bindtap="changePeriod" 
+        data-period="day"
+      >
+        今日
+      </view>
+      <view 
+        class="period-option {{selectedPeriod === 'week' ? 'active' : ''}}" 
+        bindtap="changePeriod" 
+        data-period="week"
+      >
+        本周
+      </view>
+      <view 
+        class="period-option {{selectedPeriod === 'month' ? 'active' : ''}}" 
+        bindtap="changePeriod" 
+        data-period="month"
+      >
+        本月
+      </view>
+      <view 
+        class="period-option {{selectedPeriod === 'year' ? 'active' : ''}}" 
+        bindtap="changePeriod" 
+        data-period="year"
+      >
+        本年
+      </view>
+    </view>
+  </view>
+  
+  <!-- Summary cards -->
+  <view class="summary-cards">
+    <view class="summary-card card income">
+      <view class="summary-card-header">
+        <text class="summary-card-title">总收入</text>
+      </view>
+      <view class="summary-card-amount">
+        <text>¥{{summary.total_income || '0.00'}}</text>
+      </view>
+    </view>
+    
+    <view class="summary-card card expense">
+      <view class="summary-card-header">
+        <text class="summary-card-title">总支出</text>
+      </view>
+      <view class="summary-card-amount">
+        <text>¥{{summary.total_expense || '0.00'}}</text>
+      </view>
+    </view>
+    
+    <view class="summary-card card balance">
+      <view class="summary-card-header">
+        <text class="summary-card-title">结余</text>
+      </view>
+      <view class="summary-card-amount">
+        <text>¥{{summary.balance || '0.00'}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- Category breakdown -->
+  <view class="category-breakdown card">
+    <view class="section-header">
+      <text class="section-title">分类明细</text>
+      <view class="type-toggle">
+        <view 
+          class="type-option {{breakdownType === 'expense' ? 'active' : ''}}" 
+          bindtap="changeBreakdownType" 
+          data-type="expense"
+        >
+          支出
+        </view>
+        <view 
+          class="type-option {{breakdownType === 'income' ? 'active' : ''}}" 
+          bindtap="changeBreakdownType" 
+          data-type="income"
+        >
+          收入
+        </view>
+      </view>
+    </view>
+    
+    <view class="category-list">
+      <view 
+        class="category-item" 
+        wx:for="{{breakdownType === 'expense' ? summary.expense_by_category : summary.income_by_category}}" 
+        wx:key="category"
+      >
+        <view class="category-info">
+          <text class="category-name">{{item.category}}</text>
+          <text class="category-amount">¥{{item.amount}}</text>
+        </view>
+        <view class="category-progress-container">
+          <view 
+            class="category-progress" 
+            style="width: {{item.percentage}}%;"
+          ></view>
+        </view>
+        <text class="category-percentage">{{item.percentage}}%</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- Empty state -->
+  <view class="empty-state" wx:if="{{!summary || (!summary.total_income && !summary.total_expense)}}">
+    <image class="empty-image" src="/assets/icons/empty-summary.png" mode="aspectFit"></image>
+    <text class="empty-text">暂无交易数据</text>
+    <text class="empty-subtext">添加交易记录来查看统计分析</text>
+    <button class="btn btn-primary" bindtap="navigateToTransactions">添加交易</button>
+  </view>
+  
+  <!-- Loading indicator -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

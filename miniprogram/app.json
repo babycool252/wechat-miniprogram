@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/transactions/transactions",
+    "pages/transaction-form/transaction-form",
+    "pages/city-view/city-view",
+    "pages/summary/summary"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "记账城市",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#333333",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/transactions/transactions",
+        "text": "记账",
+        "iconPath": "assets/icons/transaction.png",
+        "selectedIconPath": "assets/icons/transaction-selected.png"
+      },
+      {
+        "pagePath": "pages/city-view/city-view",
+        "text": "我的城市",
+        "iconPath": "assets/icons/city.png",
+        "selectedIconPath": "assets/icons/city-selected.png"
+      },
+      {
+        "pagePath": "pages/summary/summary",
+        "text": "统计",
+        "iconPath": "assets/icons/summary.png",
+        "selectedIconPath": "assets/icons/summary-selected.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

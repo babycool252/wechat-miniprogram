@@ -1,0 +1,94 @@
+<view class="container">
+  <view class="form-header">
+    <text class="title">{{isEditing ? '编辑交易' : '新增交易'}}</text>
+  </view>
+  
+  <form bindsubmit="handleSubmit">
+    <view class="form-group">
+      <text class="label">类型</text>
+      <radio-group name="type" bindchange="handleTypeChange" class="radio-group">
+        <label class="radio-label">
+          <radio value="expense" checked="{{formData.type === 'expense'}}" color="var(--primary-color)" />
+          <text>支出</text>
+        </label>
+        <label class="radio-label">
+          <radio value="income" checked="{{formData.type === 'income'}}" color="var(--primary-color)" />
+          <text>收入</text>
+        </label>
+      </radio-group>
+    </view>
+    
+    <view class="form-group">
+      <text class="label">金额</text>
+      <input 
+        class="input" 
+        type="digit" 
+        name="amount" 
+        value="{{formData.amount}}" 
+        placeholder="0.00" 
+        focus="{{!isEditing}}"
+      />
+    </view>
+    
+    <view class="form-group">
+      <text class="label">分类</text>
+      <picker 
+        mode="selector" 
+        range="{{categories}}" 
+        range-key="name" 
+        bindchange="handleCategoryChange"
+        class="picker"
+      >
+        <view class="picker-value {{!selectedCategory ? 'placeholder' : ''}}">
+          {{selectedCategory ? selectedCategory.name : '选择分类'}}
+        </view>
+      </picker>
+    </view>
+    
+    <view class="form-group">
+      <text class="label">描述</text>
+      <textarea 
+        class="textarea" 
+        name="description" 
+        value="{{formData.description}}" 
+        placeholder="添加描述..." 
+        maxlength="200"
+        auto-height
+      />
+    </view>
+    
+    <view class="form-group">
+      <text class="label">位置</text>
+      <input 
+        class="input" 
+        name="location" 
+        value="{{formData.location}}" 
+        placeholder="例如：北京、上海" 
+      />
+    </view>
+    
+    <view class="form-group">
+      <text class="label">日期</text>
+      <picker 
+        mode="date" 
+        value="{{formData.date}}" 
+        bindchange="handleDateChange"
+        class="picker"
+      >
+        <view class="picker-value">
+          {{formData.date || '选择日期'}}
+        </view>
+      </picker>
+    </view>
+    
+    <view class="form-actions">
+      <button class="btn btn-outline" type="default" bindtap="handleCancel">取消</button>
+      <button class="btn btn-primary" form-type="submit">保存</button>
+    </view>
+  </form>
+  
+  <!-- Delete button (only for editing) -->
+  <view class="delete-container" wx:if="{{isEditing}}">
+    <button class="btn btn-delete" bindtap="handleDelete">删除交易</button>
+  </view>
+</view>
